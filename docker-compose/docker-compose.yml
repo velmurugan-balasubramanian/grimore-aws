@@ -1,31 +1,6 @@
 version: '2.2'
 
 services:
-    mariadb:
-      SERVER_URL: https://grimore.czdonbsshiyh.us-east-1.rds.amazonaws.com
-
-    hatstall:
-      image: grimoirelab/hatstall:latest
-      environment:
-        - DATABASE_DIR=/db/
-        - ADMIN_USER=admin
-        - ADMIN_PASS=Ralipr11!@
-      ports:
-        - 8000:80
-      links:
-        - mariadb
-      volumes:
-        - ../default-grimoirelab-settings/apache-hatstall.conf:/home/grimoirelab/apache-hatstall.conf
-        - ../default-grimoirelab-settings/shdb.cfg:/home/grimoirelab/shdb.cfg
-
-    elasticsearch:
-      SERVER_URL: https://vpc-grimore-ds3x7lo4li3csq4tu6ytz4ke6i.us-east-1.es.amazonaws.com
-
-    kibiter:
-      SERVER_URL: https://vpc-grimore-ds3x7lo4li3csq4tu6ytz4ke6i.us-east-1.es.amazonaws.com/_plugin/kibana/
-      links:
-        - elasticsearch
-
     mordred:
       restart: on-failure:5
       image: bitergia/mordred:latest
@@ -36,7 +11,4 @@ services:
         - ../default-grimoirelab-settings/organizations.json:/home/bitergia/conf/organizations.json
         - ../default-grimoirelab-settings/identities.yml:/home/bitergia/conf/identities.yml
         - /tmp/:/home/bitergia/logs
-      depends_on:
-        - mariadb
-        - elasticsearch
       mem_limit: 4g
