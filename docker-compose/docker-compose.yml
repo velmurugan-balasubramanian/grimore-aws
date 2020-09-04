@@ -2,19 +2,14 @@ version: '2.2'
 
 services:
     mariadb:
-      image: mariadb:10.0
-      expose:
-        - "3306"
-      environment:
-        - MYSQL_ROOT_PASSWORD=
-        - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      SERVER_URL: https://grimore.czdonbsshiyh.us-east-1.rds.amazonaws.com
 
     hatstall:
       image: grimoirelab/hatstall:latest
       environment:
         - DATABASE_DIR=/db/
         - ADMIN_USER=admin
-        - ADMIN_PASS=admin
+        - ADMIN_PASS=Ralipr11!@
       ports:
         - 8000:80
       links:
@@ -24,25 +19,12 @@ services:
         - ../default-grimoirelab-settings/shdb.cfg:/home/grimoirelab/shdb.cfg
 
     elasticsearch:
-      image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.6
-      command: elasticsearch -Enetwork.bind_host=0.0.0.0 -Ehttp.max_content_length=2000mb
-      ports:
-        - 9200:9200
-      environment:
-        - ES_JAVA_OPTS=-Xms2g -Xmx2g
-        - ANONYMOUS_USER=true
+      SERVER_URL: https://vpc-grimore-ds3x7lo4li3csq4tu6ytz4ke6i.us-east-1.es.amazonaws.com
 
     kibiter:
-      restart: on-failure:5
-      image: bitergia/kibiter:community-v6.8.6-3
-      environment:
-        - PROJECT_NAME=Demo
-        - NODE_OPTIONS=--max-old-space-size=1000
-        - ELASTICSEARCH_URL=http://elasticsearch:9200
+      SERVER_URL: https://vpc-grimore-ds3x7lo4li3csq4tu6ytz4ke6i.us-east-1.es.amazonaws.com/_plugin/kibana/
       links:
         - elasticsearch
-      ports:
-        - 5601:5601
 
     mordred:
       restart: on-failure:5
