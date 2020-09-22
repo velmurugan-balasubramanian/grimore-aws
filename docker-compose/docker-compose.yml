@@ -1,6 +1,28 @@
 version: '2.2'
 
 services:
+    hatstall:
+      image: grimoirelab/hatstall:latest
+      environment:
+        - DATABASE_DIR=/db/
+        - ADMIN_USER=admin
+        - ADMIN_PASS=admin
+      ports:
+        - 8000:80
+      volumes:
+        - ../default-grimoirelab-settings/apache-hatstall.conf:/home/grimoirelab/apache-hatstall.conf
+        - ../default-grimoirelab-settings/shdb.cfg:/home/grimoirelab/shdb.cfg
+        
+    kibiter:
+      restart: on-failure:5
+      image: bitergia/kibiter:community-v6.8.6-3
+      environment:
+        - PROJECT_NAME=Demo
+        - NODE_OPTIONS=--max-old-space-size=1000
+        - ELASTICSEARCH_URL=https://vpc-metrics-r3y77krvygtsihvmj5nke52w74.us-east-1.es.amazonaws.com:443
+      ports:
+        - 5601:5601
+
     mordred:
       restart: on-failure:5
       image: bitergia/mordred:latest
